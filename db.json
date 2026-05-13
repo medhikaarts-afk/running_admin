@@ -7217,6 +7217,118 @@
       "pts": 0,
       "ltv": "₹4,800",
       "av": "av-k"
+    },
+    {
+      "id": "c803",
+      "name": "sharan",
+      "phone": "7396269877",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹150",
+      "av": "av-t"
+    },
+    {
+      "id": "c804",
+      "name": "swarupa",
+      "phone": "7382965318",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹3,550",
+      "av": "av-c"
+    },
+    {
+      "id": "c805",
+      "name": "Test User",
+      "phone": "9876543210",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹40",
+      "av": "av-k"
+    },
+    {
+      "id": "c806",
+      "name": "Debug",
+      "phone": "1111111111",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹40",
+      "av": "av-c"
+    },
+    {
+      "id": "c807",
+      "name": "srisha vv",
+      "phone": "7382965318",
+      "location": "13-15-62 sri giri nilayam vv nagar dilshuknagar",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹200",
+      "av": "av-c"
+    },
+    {
+      "id": "c808",
+      "name": "vijju",
+      "phone": "7396269877",
+      "location": "",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹850",
+      "joinedDate": "2026-05-12T08:10:11.200Z",
+      "av": "av-t"
+    },
+    {
+      "id": "c809",
+      "name": "chintu",
+      "phone": "7382965318",
+      "location": "pp colony",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹220",
+      "joinedDate": "2026-05-14T18:30:00.000Z",
+      "av": "av-p"
+    },
+    {
+      "id": "c810",
+      "name": "abhi",
+      "phone": "7396269877",
+      "location": "",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹400",
+      "joinedDate": "2026-05-14T18:30:00.000Z",
+      "av": "av-k"
+    },
+    {
+      "id": "c811",
+      "name": "abhi",
+      "phone": "9515239877",
+      "location": "",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹650",
+      "joinedDate": "2026-05-14T18:30:00.000Z",
+      "av": "av-k"
+    },
+    {
+      "id": "c812",
+      "name": "bablu",
+      "phone": "6300188680",
+      "location": "",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹2,750",
+      "joinedDate": "2026-05-20T18:30:00.000Z",
+      "av": "av-t"
+    },
+    {
+      "id": "c813",
+      "name": "babli",
+      "phone": "8309578708",
+      "location": "",
+      "email": "",
+      "pts": 0,
+      "ltv": "₹5,350",
+      "joinedDate": "2026-05-21T18:30:00.000Z",
+      "av": "av-t"
     }
   ],
   "staff": [
@@ -7228,16 +7340,7 @@
       "rating": "4.9",
       "av": "av-t",
       "services": [
-        "sf1",
-        "sf2",
-        "sf3",
-        "sf4",
-        "sf5",
-        "sf6",
-        "sf7",
-        "sf8",
-        "sf9",
-        "sf10"
+        "all"
       ]
     },
     {
@@ -7248,16 +7351,7 @@
       "rating": "4.7",
       "av": "av-b",
       "services": [
-        "sm1",
-        "sm2",
-        "sm3",
-        "sm4",
-        "sm5",
-        "sm6",
-        "sm7",
-        "sm8",
-        "sm9",
-        "sm10"
+        "all"
       ]
     },
     {
@@ -7268,16 +7362,7 @@
       "rating": "4.8",
       "av": "av-p",
       "services": [
-        "sf1",
-        "sf2",
-        "sf3",
-        "sf4",
-        "sf5",
-        "sf6",
-        "sf7",
-        "sf8",
-        "sf9",
-        "sf10"
+        "all"
       ]
     },
     {
@@ -7288,16 +7373,7 @@
       "rating": "4.6",
       "av": "av-c",
       "services": [
-        "sf1",
-        "sf2",
-        "sf3",
-        "sf4",
-        "sf5",
-        "sf6",
-        "sf7",
-        "sf8",
-        "sf9",
-        "sf10"
+        "all"
       ]
     },
     {
@@ -7308,16 +7384,7 @@
       "rating": "4.5",
       "av": "av-k",
       "services": [
-        "sm1",
-        "sm2",
-        "sm3",
-        "sm4",
-        "sm5",
-        "sm6",
-        "sm7",
-        "sm8",
-        "sm9",
-        "sm10"
+        "all"
       ]
     },
     {
@@ -7328,16 +7395,7 @@
       "rating": "4.9",
       "av": "av-t",
       "services": [
-        "sf1",
-        "sf2",
-        "sf3",
-        "sf4",
-        "sf5",
-        "sf6",
-        "sf7",
-        "sf8",
-        "sf9",
-        "sf10"
+        "all"
       ]
     },
     {
@@ -7366,9 +7424,9 @@
       "name": "Eyebrow shaping",
       "cat": "Eyebrow Design",
       "duration": 45,
-      "price": 40,
+      "price": 3300,
       "prices": [
-        40
+        3300
       ],
       "variants": [],
       "icon": "👁️",
@@ -7392,9 +7450,9 @@
       "name": "Complete eyebrow design",
       "cat": "Eyebrow Design",
       "duration": 45,
-      "price": 100,
+      "price": 79,
       "prices": [
-        80
+        79
       ],
       "variants": [],
       "icon": "👁️",
@@ -7483,7 +7541,7 @@
       "name": "Upperlip",
       "cat": "Waxing : Face",
       "duration": 45,
-      "price": 40,
+      "price": 400,
       "prices": [
         40
       ],
@@ -7535,7 +7593,7 @@
       "name": "Neck",
       "cat": "Waxing : Face",
       "duration": 45,
-      "price": 50,
+      "price": 500,
       "prices": [
         50
       ],
@@ -8004,7 +8062,7 @@
       "name": "Fruit cleanup",
       "cat": "Express Facial cleanups :",
       "duration": 45,
-      "price": 350,
+      "price": 500,
       "prices": [
         350
       ],
@@ -8056,7 +8114,7 @@
       "name": "Fruit Facial",
       "cat": "Exotic Facials:",
       "duration": 45,
-      "price": 700,
+      "price": 7000,
       "prices": [
         700
       ],
@@ -8825,7 +8883,7 @@
       "name": "Bridal makeup",
       "cat": "Make up:",
       "duration": 45,
-      "price": 9500,
+      "price": 95000,
       "prices": [
         9500
       ],
@@ -8942,7 +9000,7 @@
       "name": "bride",
       "cat": "bride package:",
       "duration": 45,
-      "price": 9990,
+      "price": 20000,
       "prices": [
         9990
       ],
@@ -8957,10 +9015,10 @@
       "id": "i1",
       "name": "Luxury Hair Color",
       "cat": "Hair",
-      "stock": 24,
+      "stock": 1,
       "min": 5,
       "unit": "units",
-      "cost": 1200
+      "cost": 2000
     },
     {
       "id": "i2",
@@ -8987,7 +9045,7 @@
       "stock": 30,
       "min": 8,
       "unit": "bottles",
-      "cost": 800
+      "cost": 8000
     },
     {
       "id": "i5",
@@ -9015,24 +9073,496 @@
       "min": 5,
       "unit": "bottles",
       "cost": 950
+    },
+    {
+      "name": "tissues",
+      "cat": "General",
+      "unit": "box",
+      "stock": 2000,
+      "min": 7,
+      "cost": 150
     }
   ],
   "bookings": [
     {
-      "id": "GS-59665",
-      "clientId": "c799",
-      "clientName": "balaji",
+      "id": "GS-61896",
+      "clientId": "c807",
+      "clientName": "srisha vv",
       "services": [
-        "svc-1778241632140"
+        "svc-1778241632119",
+        "svc-1778241632096"
       ],
-      "staffId": null,
-      "date": "2026-05-09",
-      "time": "14:00",
-      "total": 350,
+      "staffId": "st3",
+      "date": "2026-05-13",
+      "time": "17:00",
+      "total": 200,
       "status": "upcoming",
       "notes": "",
       "source": "walk-in",
-      "deposit": true
+      "location": "13-15-62 sri giri nilayam vv nagar dilshuknagar",
+      "deposit": true,
+      "createdAt": "2026-05-12T06:42:27.756Z"
+    },
+    {
+      "id": "GS-39691",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632194",
+        "svc-1778241632119"
+      ],
+      "staffId": "st5",
+      "date": "2026-05-13",
+      "time": "12:30",
+      "total": 620,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T07:20:58.796Z"
+    },
+    {
+      "id": "GS-26545",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632173",
+        "svc-1778241632183"
+      ],
+      "staffId": "st4",
+      "date": "2026-05-13",
+      "time": "12:00",
+      "total": 850,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T07:24:54.252Z"
+    },
+    {
+      "id": "GS-67310",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632177"
+      ],
+      "staffId": "st4",
+      "date": "2026-05-15",
+      "time": "14:00",
+      "total": 1000,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": true,
+      "createdAt": "2026-05-12T07:28:00.842Z"
+    },
+    {
+      "id": "GS-50988",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632095"
+      ],
+      "staffId": "st3",
+      "date": "2026-05-21",
+      "time": "16:00",
+      "total": 50,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T07:38:06.775Z"
+    },
+    {
+      "id": "GS-96870",
+      "clientId": "c798",
+      "clientName": "sriya",
+      "services": [
+        "svc-1778241632098"
+      ],
+      "staffId": "st6",
+      "date": "2026-05-22",
+      "time": "17:00",
+      "total": 20,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T07:41:24.074Z"
+    },
+    {
+      "id": "GS-68404",
+      "clientId": "c808",
+      "clientName": "vijju",
+      "services": [
+        "svc-1778241632171",
+        "svc-1778241632107"
+      ],
+      "staffId": "st5",
+      "date": "2026-05-13",
+      "time": "14:00",
+      "total": 850,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T08:10:11.200Z"
+    },
+    {
+      "id": "GS-96870",
+      "clientId": "c798",
+      "clientName": "sriya",
+      "services": [
+        "svc-1778241632098"
+      ],
+      "staffId": "st6",
+      "date": "2026-05-23",
+      "time": "17:00",
+      "total": 20,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T09:08:25.179Z"
+    },
+    {
+      "id": "GS-14949",
+      "clientId": "c797",
+      "clientName": "lakshmi",
+      "services": [
+        "svc-1778241632146",
+        "svc-1778241632159"
+      ],
+      "staffId": "st3",
+      "date": "2026-05-12",
+      "time": "17:30",
+      "total": 2100,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T11:40:16.046Z"
+    },
+    {
+      "id": "GS-24838",
+      "clientId": "c797",
+      "clientName": "lakshmi",
+      "services": [
+        "svc-1778241632146",
+        "svc-1778241632159"
+      ],
+      "staffId": "st4",
+      "date": "2026-05-13",
+      "time": "17:00",
+      "total": 2100,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T11:45:00.711Z"
+    },
+    {
+      "id": "GS-16452",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632095"
+      ],
+      "staffId": null,
+      "date": "2026-05-13",
+      "time": "17:00",
+      "total": 50,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T11:48:28.482Z"
+    },
+    {
+      "id": "GS-25758",
+      "clientId": "c803",
+      "clientName": "sharan",
+      "services": [
+        "svc-1778241632097"
+      ],
+      "staffId": "st6",
+      "date": "2026-05-13",
+      "time": "17:30",
+      "total": 40,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T12:03:10.699Z"
+    },
+    {
+      "id": "GS-71915",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632173"
+      ],
+      "staffId": "st3",
+      "date": "2026-05-13",
+      "time": "11:30",
+      "total": 150,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T12:17:08.739Z"
+    },
+    {
+      "id": "GS-90658",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632095"
+      ],
+      "staffId": "st3",
+      "date": "2026-05-13",
+      "time": "09:00",
+      "total": 50,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T12:19:07.949Z"
+    },
+    {
+      "id": "GS-14425",
+      "clientId": "c797",
+      "clientName": "lakshmi",
+      "services": [
+        "svc-1778241632099"
+      ],
+      "staffId": "st6",
+      "date": "2026-05-13",
+      "time": "09:30",
+      "total": 40,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T12:23:52.754Z"
+    },
+    {
+      "id": "GS-37583",
+      "clientId": "c809",
+      "clientName": "chintu",
+      "services": [
+        "svc-1778241632098",
+        "svc-1778241632126"
+      ],
+      "staffId": "st5",
+      "date": "2026-05-15",
+      "time": "17:00",
+      "total": 220,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "pp colony",
+      "deposit": false,
+      "createdAt": "2026-05-12T12:28:02.860Z"
+    },
+    {
+      "id": "GS-16463",
+      "clientId": "c809",
+      "clientName": "chintu",
+      "services": [
+        "svc-1778241632138"
+      ],
+      "staffId": "st6",
+      "date": "2026-05-15",
+      "time": "15:30",
+      "total": 2000,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": true,
+      "createdAt": "2026-05-12T12:31:30.919Z"
+    },
+    {
+      "id": "GS-72836",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632095"
+      ],
+      "staffId": "st5",
+      "date": "2026-05-14",
+      "time": "10:30",
+      "total": 50,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T12:38:05.257Z"
+    },
+    {
+      "id": "GS-95220",
+      "clientId": "c799",
+      "clientName": "balaji",
+      "services": [
+        "svc-1778241632099",
+        "svc-1778241632101"
+      ],
+      "staffId": null,
+      "date": "2026-05-22",
+      "time": "15:00",
+      "total": 190,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T12:49:00.503Z"
+    },
+    {
+      "id": "GS-18589",
+      "clientId": "c796",
+      "clientName": "sharan",
+      "services": [
+        "svc-1778241632095"
+      ],
+      "staffId": "st6",
+      "date": "2026-05-20",
+      "time": "17:00",
+      "total": 50,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T13:04:34.408Z"
+    },
+    {
+      "id": "GS-36047",
+      "clientId": "c810",
+      "clientName": "abhi",
+      "services": [
+        "svc-1778241632173",
+        "svc-1778241632180"
+      ],
+      "staffId": "st7",
+      "date": "2026-05-15",
+      "time": "16:30",
+      "total": 400,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T13:35:45.779Z"
+    },
+    {
+      "id": "GS-18762",
+      "clientId": "c811",
+      "clientName": "abhi",
+      "services": [
+        "svc-1778241632161",
+        "svc-1778241632162"
+      ],
+      "staffId": "st5",
+      "date": "2026-05-15",
+      "time": "16:30",
+      "total": 650,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-12T13:42:42.326Z"
+    },
+    {
+      "id": "GS-41588",
+      "clientId": "c812",
+      "clientName": "bablu",
+      "services": [
+        "svc-1778241632174",
+        "svc-1778241632200",
+        "svc-1778241632205"
+      ],
+      "staffId": "st5",
+      "date": "2026-05-21",
+      "time": "15:30",
+      "total": 2750,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-13T06:55:46.637Z"
+    },
+    {
+      "id": "GS-34180",
+      "clientId": "c813",
+      "clientName": "babli",
+      "services": [
+        "svc-1778241632094",
+        "svc-1778241632107",
+        "svc-1778241632138"
+      ],
+      "staffId": "st4",
+      "date": "2026-05-22",
+      "time": "17:00",
+      "total": 5350,
+      "status": "upcoming",
+      "notes": "",
+      "source": "walk-in",
+      "location": "",
+      "deposit": false,
+      "createdAt": "2026-05-13T06:59:02.205Z"
+    }
+  ],
+  "events": [
+    {
+      "title": "Untitled Event",
+      "type": "Event",
+      "time": "12:30",
+      "description": "",
+      "date": "2026-05-09",
+      "id": "ev1778494066051"
+    },
+    {
+      "title": "Untitled Event",
+      "type": "Event",
+      "time": "12:30",
+      "description": "",
+      "date": "2026-05-02",
+      "id": "ev1778500543819"
+    },
+    {
+      "title": "Untitled Event",
+      "type": "Event",
+      "time": "12:30",
+      "description": "",
+      "date": "2026-05-13",
+      "id": "ev1778568437108"
+    },
+    {
+      "title": "Salon Workshop",
+      "type": "Event",
+      "time": "12:30",
+      "description": "",
+      "date": "2026-05-14",
+      "id": "ev1778583992454"
     }
   ]
 }

@@ -7,13 +7,83 @@ const Razorpay = require('razorpay');
 const crypto = require('crypto');
 
 const app = express();
-app.use(cors());
+app.use(cors()); // Permissive CORS for local development
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static(__dirname));
 
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
     next();
+});
+
+// New removal route
+app.post('/api/bookings/remove/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log(`[CANCELLATION REQUEST] ID: ${id} at ${new Date().toISOString()}`);
+    
+    if (isConnected) {
+        try {
+            const result = await Booking.deleteOne({ $or: [{ id: id }, { _id: id }] });
+            if (result.deletedCount > 0) {
+                console.log(`[SUCCESS] Booking ${id} removed from MongoDB`);
+                return res.json({ success: true });
+            }
+        } catch(e) { console.error('[ERROR] DB removal failed:', e); }
+    }
+    
+    const idx = localDb.bookings.findIndex(b => b.id === id || b._id === id);
+    if (idx !== -1) {
+        localDb.bookings.splice(idx, 1);
+        saveLocal();
+        console.log(`[SUCCESS] Booking ${id} removed from localDb.json`);
+        return res.json({ success: true });
+    }
+    
+    console.log(`[NOT FOUND] Booking ${id} not found in any database`);
+    res.status(404).json({ error: 'Booking not found' });
+});
+
+// Safe Removal route (GET) - Bypass browser POST restrictions
+app.get('/api/bookings/remove-safe/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log(`[SAFE CANCELLATION REQUEST] ID: ${id} at ${new Date().toISOString()}`);
+    
+    if (isConnected) {
+        try {
+            await Booking.deleteOne({ $or: [{ id: id }, { _id: id }] });
+        } catch(e) {}
+    }
+    const idx = localDb.bookings.findIndex(b => b.id === id || b._id === id);
+    if (idx !== -1) {
+        localDb.bookings.splice(idx, 1);
+        saveLocal();
+    }
+    // Always return success or redirect back to dashboard to avoid "stuck" page
+    res.send('<script>alert("Cancellation processed."); window.close();</script>Cancellation successful. You can close this tab.');
+});
+
+// Update Booking route (PUT) - For Rescheduling
+app.put('/api/bookings/:id', async (req, res) => {
+    const id = req.params.id;
+    const updatedData = req.body;
+    console.log(`[UPDATE REQUEST] ID: ${id} at ${new Date().toISOString()}`);
+    
+    if (isConnected) {
+        try {
+            await Booking.updateOne({ $or: [{ id: id }, { _id: id }] }, updatedData);
+            console.log(`[SUCCESS] Booking ${id} updated in MongoDB`);
+        } catch(e) { console.error('[ERROR] MongoDB update failed:', e); }
+    }
+    
+    const idx = localDb.bookings.findIndex(b => b.id === id || b._id === id);
+    if (idx !== -1) {
+        localDb.bookings[idx] = { ...localDb.bookings[idx], ...updatedData };
+        saveLocal();
+        console.log(`[SUCCESS] Booking ${id} updated in localDb.json`);
+        return res.json({ success: true });
+    }
+    
+    res.status(404).json({ error: 'Booking not found' });
 });
 
 const PORT = process.env.PORT || 5000;
@@ -35,21 +105,26 @@ const razorpay = new Razorpay({
 mongoose.set('bufferCommands', false);
 
 let isConnected = false;
-mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 1000 })
-  .then(() => { console.log('Connected to MongoDB'); isConnected = true; })
-  .catch(err => { console.error('MongoDB connection failed. Using local storage.'); isConnected = false; });
+// mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 2000 })
+//   .then(() => { console.log('Connected to MongoDB'); isConnected = true; })
+//   .catch(err => { console.error('MongoDB connection failed. Falling back to local storage.'); isConnected = false; });
+console.log('Running in LOCAL STORAGE mode (MongoDB bypassed)');
+isConnected = false;
 
-const clientSchema = new mongoose.Schema({ id: String, name: String, phone: String, email: String, pts: Number, ltv: String, av: String }, { bufferCommands: false });
+const clientSchema = new mongoose.Schema({ id: String, name: String, phone: String, email: String, location: String, pts: Number, ltv: String, av: String }, { bufferCommands: false });
 const staffSchema = new mongoose.Schema({ id: String, name: String, gender: String, spec: String, rating: String, av: String, services: [String], status: String }, { bufferCommands: false });
 const serviceSchema = new mongoose.Schema({ id: String, name: String, cat: String, duration: Number, price: Number, prices: [Number], icon: String, gender: String }, { bufferCommands: false });
 const inventorySchema = new mongoose.Schema({ id: String, name: String, cat: String, stock: Number, min: Number, unit: String, cost: Number }, { bufferCommands: false });
-const bookingSchema = new mongoose.Schema({ id: String, clientId: String, clientName: String, services: [String], staffId: String, date: String, time: String, total: Number, status: String, notes: String, source: String, deposit: Boolean, timestamp: String }, { bufferCommands: false });
+const bookingSchema = new mongoose.Schema({ id: String, clientId: String, clientName: String, services: [String], staffId: String, date: String, time: String, total: Number, status: String, notes: String, source: String, location: String, deposit: Boolean, timestamp: String }, { bufferCommands: false });
 
 const Client = mongoose.model('Client', clientSchema);
 const Staff = mongoose.model('Staff', staffSchema);
 const Service = mongoose.model('Service', serviceSchema);
 const Inventory = mongoose.model('Inventory', inventorySchema);
 const Booking = mongoose.model('Booking', bookingSchema);
+
+const eventSchema = new mongoose.Schema({ id: String, title: String, date: String, time: String, type: String, description: String }, { bufferCommands: false });
+const Event = mongoose.model('Event', eventSchema);
 
 // Clients
 app.get('/api/clients', async (req, res) => {
@@ -59,6 +134,29 @@ app.get('/api/clients', async (req, res) => {
 app.post('/api/clients', async (req, res) => {
     if (isConnected) { try { return res.json(await new Client(req.body).save()); } catch(e) {} }
     localDb.clients.push(req.body); saveLocal(); res.json(req.body);
+});
+app.put('/api/clients/:id', async (req, res) => {
+    const searchId = String(req.params.id).trim();
+    if (isConnected) {
+        try {
+            const updated = await Client.findOneAndUpdate(
+                { $or: [{ id: searchId }, { name: { $regex: new RegExp(`^${searchId}$`, 'i') } }] },
+                req.body,
+                { new: true }
+            );
+            if (updated) return res.json(updated);
+        } catch(e) {}
+    }
+    const idx = localDb.clients.findIndex(c => 
+        String(c.id).trim() === searchId || 
+        String(c.name).trim().toLowerCase() === searchId.toLowerCase()
+    );
+    if (idx !== -1) {
+        localDb.clients[idx] = { ...localDb.clients[idx], ...req.body };
+        saveLocal();
+        return res.json(localDb.clients[idx]);
+    }
+    res.status(404).json({ error: 'Client not found' });
 });
 
 // Staff
@@ -84,9 +182,22 @@ app.post('/api/services', async (req, res) => {
 });
 
 app.put('/api/services/:id', async (req, res) => {
-    if (isConnected) { try { return res.json(await Service.findOneAndUpdate({ id: req.params.id }, req.body, { new: true })); } catch(e) {} }
-    const idx = localDb.services.findIndex(s => s.id === req.params.id);
-    if (idx !== -1) { localDb.services[idx] = { ...localDb.services[idx], ...req.body }; saveLocal(); return res.json(localDb.services[idx]); }
+    if (isConnected) { 
+        try { 
+            const updated = await Service.findOneAndUpdate(
+                { $or: [{ id: req.params.id }, { name: req.params.id }] }, 
+                req.body, 
+                { new: true }
+            );
+            if (updated) return res.json(updated);
+        } catch(e) {} 
+    }
+    const idx = localDb.services.findIndex(s => s.id === req.params.id || s.name === req.params.id);
+    if (idx !== -1) { 
+        localDb.services[idx] = { ...localDb.services[idx], ...req.body }; 
+        saveLocal(); 
+        return res.json(localDb.services[idx]); 
+    }
     res.status(404).json({ error: 'Not found' });
 });
 
@@ -116,6 +227,41 @@ app.post('/api/inventory', async (req, res) => {
     if (isConnected) { try { return res.json(await new Inventory(req.body).save()); } catch(e) {} }
     localDb.inventory.push(req.body); saveLocal(); res.json(req.body);
 });
+app.put('/api/inventory/:id', async (req, res) => {
+    if (isConnected) { 
+        try { 
+            const updated = await Inventory.findOneAndUpdate(
+                { $or: [{ id: req.params.id }, { name: req.params.id }] }, 
+                req.body, 
+                { new: true }
+            );
+            if (updated) return res.json(updated);
+        } catch(e) {} 
+    }
+    const idx = localDb.inventory.findIndex(i => i.id === req.params.id || i.name === req.params.id);
+    if (idx !== -1) { 
+        localDb.inventory[idx] = { ...localDb.inventory[idx], ...req.body }; 
+        saveLocal(); 
+        return res.json(localDb.inventory[idx]); 
+    }
+    res.status(404).json({ error: 'Not found' });
+});
+
+app.delete('/api/inventory/:id', async (req, res) => {
+    if (isConnected) {
+        try {
+            await Inventory.deleteOne({ $or: [{ id: req.params.id }, { name: req.params.id }] });
+            return res.json({ success: true });
+        } catch(e) {}
+    }
+    const idx = localDb.inventory.findIndex(i => i.id === req.params.id || i.name === req.params.id);
+    if (idx !== -1) {
+        localDb.inventory.splice(idx, 1);
+        saveLocal();
+        return res.json({ success: true });
+    }
+    res.status(404).json({ error: 'Item not found' });
+});
 
 // Bookings
 app.get('/api/bookings', async (req, res) => {
@@ -132,13 +278,49 @@ app.put('/api/bookings/:id', async (req, res) => {
     if (idx !== -1) { localDb.bookings[idx] = { ...localDb.bookings[idx], ...req.body }; saveLocal(); return res.json(localDb.bookings[idx]); }
     res.status(404).json({ error: 'Not found' });
 });
+app.delete('/api/bookings/:id', async (req, res) => {
+    const id = req.params.id;
+    if (isConnected) {
+        try {
+            const result = await Booking.deleteOne({ $or: [{ id: id }, { _id: id }] });
+            if (result.deletedCount > 0) return res.json({ success: true });
+        } catch(e) {}
+    }
+    const idx = localDb.bookings.findIndex(b => b.id === id || b._id === id);
+    if (idx !== -1) {
+        localDb.bookings.splice(idx, 1);
+        saveLocal();
+        return res.json({ success: true });
+    }
+    res.status(404).json({ error: 'Booking not found' });
+});
+
+// Fallback POST route for deletion (more compatible with some firewalls)
+app.post('/api/bookings/delete/:id', async (req, res) => {
+    const id = req.params.id;
+    if (isConnected) {
+        try {
+            const result = await Booking.deleteOne({ $or: [{ id: id }, { _id: id }] });
+            if (result.deletedCount > 0) return res.json({ success: true });
+        } catch(e) {}
+    }
+    const idx = localDb.bookings.findIndex(b => b.id === id || b._id === id);
+    if (idx !== -1) {
+        localDb.bookings.splice(idx, 1);
+        saveLocal();
+        return res.json({ success: true });
+    }
+    res.status(404).json({ error: 'Booking not found' });
+});
 
 // --- NEW: Payment Integration Routes ---
 app.post('/api/payment/create-session', async (req, res) => {
     const { amount, bookingId, clientName } = req.body;
     
     // Check if keys are placeholders
-    const isMock = !process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID.includes('YourKeyHere');
+    const isMock = !process.env.RAZORPAY_KEY_ID || 
+                   process.env.RAZORPAY_KEY_ID.includes('YourKeyHere') || 
+                   process.env.RAZORPAY_KEY_ID.includes('PASTE_YOUR_KEY');
 
     if (isMock) {
         console.log("Using Mock Payment Mode (No real keys found)");
@@ -191,21 +373,46 @@ app.post('/api/payment/verify', async (req, res) => {
     }
 });
 
+// Events
+app.get('/api/events', async (req, res) => {
+    if (isConnected) { try { return res.json(await Event.find()); } catch(e) {} }
+    res.json(localDb.events || []);
+});
+app.post('/api/events', async (req, res) => {
+    if (isConnected) { try { return res.json(await new Event(req.body).save()); } catch(e) {} }
+    if (!localDb.events) localDb.events = [];
+    localDb.events.push(req.body); saveLocal(); res.json(req.body);
+});
+app.put('/api/events/:id', async (req, res) => {
+    if (isConnected) { try { return res.json(await Event.findOneAndUpdate({ id: req.params.id }, req.body, { new: true })); } catch(e) {} }
+    const idx = (localDb.events || []).findIndex(e => e.id === req.params.id);
+    if (idx !== -1) { localDb.events[idx] = { ...localDb.events[idx], ...req.body }; saveLocal(); return res.json(localDb.events[idx]); }
+    res.status(404).json({ error: 'Not found' });
+});
+app.delete('/api/events/:id', async (req, res) => {
+    if (isConnected) { try { await Event.deleteOne({ id: req.params.id }); return res.json({ success: true }); } catch(e) {} }
+    const idx = (localDb.events || []).findIndex(e => e.id === req.params.id);
+    if (idx !== -1) { localDb.events.splice(idx, 1); saveLocal(); return res.json({ success: true }); }
+    res.status(404).json({ error: 'Not found' });
+});
+
 // Seed
 app.post('/api/seed', async (req, res) => {
-    const { clients, staff, services, inventory } = req.body;
+    const { clients, staff, services, inventory, events } = req.body;
     if (isConnected) {
         try {
             if (clients) { await Client.deleteMany({}); await Client.insertMany(clients); }
             if (staff) { await Staff.deleteMany({}); await Staff.insertMany(staff); }
             if (services) { await Service.deleteMany({}); await Service.insertMany(services); }
             if (inventory) { await Inventory.deleteMany({}); await Inventory.insertMany(inventory); }
+            if (events) { await Event.deleteMany({}); await Event.insertMany(events); }
         } catch (e) { console.error('Seed error:', e); }
     }
     if (clients) localDb.clients = clients;
     if (staff) localDb.staff = staff;
     if (services) localDb.services = services;
     if (inventory) localDb.inventory = inventory;
+    if (events) localDb.events = events;
     saveLocal();
     res.json({ message: 'Success' });
 });
@@ -285,4 +492,87 @@ app.post('/api/admin/seed-mongo', async (req, res) => {
         res.status(500).json({ error: e.message });
     }
 });
+
+// --- HTML Module Merger (Logic from merge.js) ---
+app.post('/api/admin/merge-modules', (req, res) => {
+    try {
+        const targetFile = 'MedhikaArts_complete_module.html';
+        const sourceFile = 'complete_module.html';
+        const outputFile = 'MedhikaArts_complete_module_merged.html';
+
+        if (!fs.existsSync(targetFile) || !fs.existsSync(sourceFile)) {
+            return res.status(400).json({ error: 'Source or Target HTML files not found.' });
+        }
+
+        const f1 = fs.readFileSync(targetFile, 'utf8');
+        const f2 = fs.readFileSync(sourceFile, 'utf8');
+
+        // 1. Extract CSS
+        const cssStart = f2.indexOf('/* Modal Tabs */');
+        const cssEnd = f2.indexOf('</style>', cssStart);
+        const extraCss = cssStart !== -1 ? f2.substring(cssStart, cssEnd) : '';
+
+        // 2. Extract Notification Header
+        const notifStart = f2.indexOf('<div class="notification-wrapper">');
+        const notifEnd = f2.indexOf('<button class="btn"', notifStart);
+        const notificationHtml = notifStart !== -1 ? f2.substring(notifStart, notifEnd) : '';
+
+        // 3. Extract Ad Banner
+        const adStart = f2.indexOf('<div class="ad-banner">');
+        const adEnd = f2.indexOf('<div class="stats-grid">', adStart);
+        const adHtml = adStart !== -1 ? f2.substring(adStart, adEnd) : '';
+
+        // 4. Extract View Calendar
+        const calStart = f2.indexOf('<!-- Full Calendar View -->');
+        const calEnd = f2.indexOf('<div id="view-settings"', calStart);
+        const calHtml = calStart !== -1 ? f2.substring(calStart, calEnd) : '';
+
+        // 5. Extract Modals
+        const modalsStart = f2.indexOf('<!-- Offers Modal -->');
+        const modalsEnd = f2.indexOf('<script>', modalsStart);
+        const modalsHtml = modalsStart !== -1 ? f2.substring(modalsStart, modalsEnd) : '';
+
+        // 6. Extract JS Functions
+        const jsStart = f2.indexOf('// Modal Functions');
+        const jsEnd = f2.indexOf('</script>', jsStart);
+        let extraJs = '';
+        if (jsStart !== -1) {
+            extraJs = f2.substring(jsStart, jsEnd);
+        } else if (f2.indexOf('function toggleNotifications') !== -1) {
+            extraJs = f2.substring(f2.indexOf('function toggleNotifications'), f2.indexOf('</script>', f2.indexOf('function toggleNotifications')));
+        }
+
+        let newF1 = f1;
+
+        // Inject CSS
+        if (extraCss) newF1 = newF1.replace('</style>', extraCss + '\n</style>');
+
+        // Inject Notification Header
+        const syncBtnPattern = /<button class="btn"\s+style="background: white; border: 1px solid var\(--border\); display: flex; align-items: center; gap: 8px;"\s+onclick="manualSync\(\)" id="sync-btn">/;
+        if (notificationHtml) newF1 = newF1.replace(syncBtnPattern, notificationHtml + '\n<button class="btn" style="background: white; border: 1px solid var(--border); display: flex; align-items: center; gap: 8px;" onclick="manualSync()" id="sync-btn">');
+
+        // Inject Ad Banner
+        if (adHtml) newF1 = newF1.replace('<div class="stats-grid">', adHtml + '\n<div class="stats-grid">');
+
+        // Inject View Calendar
+        if (calHtml) newF1 = newF1.replace('<div id="view-settings"', calHtml + '\n<div id="view-settings"');
+
+        // Inject Modals
+        if (modalsHtml) newF1 = newF1.replace('<script>', modalsHtml + '\n<script>');
+
+        // Inject JS Functions
+        if (extraJs) newF1 = newF1.replace('</script>', '\n' + extraJs + '\n</script>');
+
+        // Update nav to include full calendar if not present
+        if (!newF1.includes('nav-calendar')) {
+            newF1 = newF1.replace('<li class="nav-item" onclick="switchView(\'reports\')" id="nav-reports">Reports</li>', '<li class="nav-item" onclick="switchView(\'reports\')" id="nav-reports">Reports</li>\n                    <li class="nav-item" onclick="switchView(\'calendar\')" id="nav-calendar">Calendar</li>');
+        }
+
+        fs.writeFileSync(outputFile, newF1);
+        res.json({ message: 'Modules merged successfully!', output: outputFile });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

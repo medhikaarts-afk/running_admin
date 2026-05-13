@@ -1,742 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Module | MedhikaArts</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
-
-  :root {
-    --glass: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.4);
-    --shadow-premium: 0 25px 50px -12px rgba(26, 107, 138, 0.15);
-    --font-main: 'Outfit', sans-serif;
-    --color-primary: #1A6B8A;
-    --color-primary-light: #2196B8;
-    --color-primary-bg: rgba(26, 107, 138, 0.08);
-    --color-success: #1D9E75;
-    --color-success-bg: rgba(29, 158, 117, 0.1);
-    --color-warning: #F59E0B;
-    --color-warning-bg: rgba(245, 158, 11, 0.1);
-    --color-danger: #E53E3E;
-    --color-text-primary: #1a202c;
-    --color-text-secondary: #718096;
-    --color-text-tertiary: #a0aec0;
-    --color-background-primary: #ffffff;
-    --color-background-secondary: #f7fafc;
-    --color-border-primary: #e2e8f0;
-    --color-border-secondary: #edf2f7;
-    --color-border-tertiary: #f7fafc;
-    --border-radius-sm: 8px;
-    --border-radius-md: 12px;
-    --border-radius-lg: 16px;
-    --border-radius-xl: 32px;
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  body {
-    background: #ebedee;
-    background-image:
-      radial-gradient(at 0% 0%, hsla(197, 68%, 32%, 0.15) 0px, transparent 50%),
-      radial-gradient(at 50% 0%, hsla(160, 68%, 37%, 0.1) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, hsla(20, 68%, 50%, 0.1) 0px, transparent 50%);
-    font-family: var(--font-main);
-    color: var(--color-text-primary);
-    font-size: 14px;
-    line-height: 1.5;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Layout */
-  .wrap {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 40px;
-    max-width: 1320px;
-    margin: 60px auto;
-    padding: 0 30px;
-    animation: fadeIn 0.8s ease-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .left {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .right {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    position: sticky;
-    top: 60px;
-    height: fit-content;
-  }
-
-  /* Cards & Interaction */
-  .card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--border-radius-xl);
-    box-shadow: var(--shadow-premium);
-    padding: 32px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 35px 60px -15px rgba(26, 107, 138, 0.2);
-  }
-
-  .card-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* Step Bar - Premium Floating */
-  .step-bar {
-    display: flex;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.6);
-    
-    border: 1px solid var(--glass-border);
-    padding: 8px;
-    border-radius: 60px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
-  }
-
-  .step {
-    flex: 1;
-    text-align: center;
-    padding: 12px 16px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    letter-spacing: -0.01em;
-  }
-
-  .step.active {
-    background: var(--color-primary);
-    color: white;
-    box-shadow: 0 10px 20px -5px rgba(26, 107, 138, 0.4);
-    transform: scale(1.05);
-  }
-
-  /* Form Fields */
-  .field {
-    margin-bottom: 14px;
-  }
-
-  .field label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    margin-bottom: 6px;
-  }
-
-  .field input,
-  .field select,
-  .field textarea {
-    width: 100%;
-    padding: 12px 16px;
-    font-family: var(--font-main);
-    font-size: 14px;
-    border: 1px solid var(--color-border-secondary);
-    border-radius: var(--border-radius-md);
-    background: var(--color-background-primary);
-    color: var(--color-text-primary);
-    outline: none;
-    transition: all 0.3s ease;
-  }
-
-  .field input:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(26, 107, 138, 0.1);
-  }
-
-  /* Service Grid Selection */
-  .svc-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 16px;
-  }
-
-  .svc-card {
-    background: white;
-    border-radius: var(--border-radius-lg);
-    border: 2px solid transparent;
-    padding: 24px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  }
-
-  .svc-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-
-  .svc-card.selected {
-    border-color: var(--color-primary);
-    background: linear-gradient(145deg, #ffffff, #f0f9ff);
-  }
-
-  /* AI Intelligence Panel */
-  .ai-panel {
-    border: 1px solid rgba(77, 192, 232, 0.4);
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    border-radius: var(--border-radius-lg);
-    padding: 24px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .ai-panel::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(from 0deg, transparent, rgba(33, 150, 184, 0.1), transparent);
-    animation: aiRotate 12s linear infinite;
-  }
-
-  @keyframes aiRotate {
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  .ai-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--color-primary);
-    display: inline-block;
-    margin-right: 10px;
-    animation: aiPulse 2s infinite;
-  }
-
-  @keyframes aiPulse {
-
-    0%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    50% {
-      opacity: 0.5;
-      transform: scale(1.2);
-    }
-  }
-
-  /* Buttons */
-  .btn-full {
-    height: 54px;
-    border-radius: 16px;
-    font-weight: 700;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    border: none;
-    cursor: pointer;
-  }
-
-  .btn-primary {
-    background: var(--color-primary);
-    color: white;
-    box-shadow: 0 10px 20px -5px rgba(26, 107, 138, 0.4);
-  }
-
-  .staff-card {
-    border: 1.5px solid var(--color-border-secondary);
-    border-radius: var(--border-radius-lg);
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    position: relative;
-    overflow: hidden;
-    background: white;
-  }
-
-  .staff-card:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
-  }
-
-  .staff-card.selected {
-    border-color: var(--color-primary);
-    background: var(--color-primary-bg);
-  }
-
-  .staff-card.recommended {
-    border-color: var(--color-success);
-  }
-
-  .staff-card.recommended::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--color-success);
-  }
-
-  .staff-name {
-    font-weight: 700;
-    color: var(--color-text-primary);
-    font-size: 14px;
-    margin-bottom: 2px;
-  }
-
-  .staff-spec {
-    font-size: 11px;
-    color: var(--color-text-secondary);
-    margin-bottom: 4px;
-  }
-
-  .staff-rating {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--color-warning);
-  }
-
-  /* Calendar & Slots */
-  .calendar-container {
-    background: white;
-    border-radius: var(--border-radius-lg);
-    padding: 15px;
-    border: 1px solid var(--color-border-secondary);
-  }
-
-  .calendar-nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding: 0 5px;
-  }
-
-  .month-label {
-    font-weight: 700;
-    color: var(--color-primary);
-    font-size: 15px;
-  }
-
-  .calendar-nav-bar button {
-    background: var(--color-background-secondary);
-    border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    color: var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .calendar-nav-bar button:hover {
-    background: var(--color-primary);
-    color: white;
-  }
-
-  .calendar-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--color-text-tertiary);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-
-  .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
-  .toggle-switch {
-    width: 44px;
-    height: 24px;
-    background: #cbd5e1;
-    border-radius: 20px;
-    position: relative;
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-  .toggle-switch.on {
-    background: var(--color-primary);
-  }
-  .toggle-switch::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 20px;
-    height: 20px;
-    background: white;
-    border-radius: 50%;
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-  .toggle-switch.on::after {
-    left: 22px;
-  }
-
-  .sl-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-  }
-
-  .cal-cell {
-    aspect-ratio: 1;
-    border-radius: 10px;
-    transition: all 0.2s;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .cal-cell:hover:not(.disabled) {
-    background: var(--color-primary-bg);
-    color: var(--color-primary);
-  }
-
-  .cal-cell.selected {
-    background: var(--color-primary) !important;
-    color: white !important;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(26, 107, 138, 0.3);
-  }
-
-  .cal-cell.today {
-    color: var(--color-primary);
-    font-weight: 700;
-    border: 1px solid var(--color-primary-bg);
-  }
-
-  .cal-cell.disabled {
-    color: var(--color-border-primary);
-    cursor: not-allowed;
-  }
-
-  .schedule-layout {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 24px;
-    align-items: start;
-  }
-
-  .time-slots-area {
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: var(--border-radius-lg);
-    padding: 20px;
-    border: 1px solid var(--glass-border);
-    height: 100%;
-  }
-
-  .time-section-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--color-text-secondary);
-    margin: 16px 0 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .slot-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-    gap: 8px;
-  }
-
-  .slot {
-    padding: 10px 5px;
-    text-align: center;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: white;
-    border: 1px solid var(--color-border-secondary);
-    color: var(--color-text-secondary);
-  }
-
-  .slot:hover:not(.busy) {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    transform: translateY(-2px);
-  }
-
-  .slot.selected {
-    background: var(--color-primary);
-    color: white !important;
-    border-color: var(--color-primary);
-    box-shadow: 0 4px 10px rgba(26, 107, 138, 0.3);
-  }
-
-  .slot.busy {
-    background: var(--color-background-secondary);
-    color: var(--color-border-primary);
-    cursor: not-allowed;
-    border-color: transparent;
-  }
-
-  .slot.ai-best {
-    border-color: var(--color-success);
-    color: var(--color-success);
-    border-style: dashed;
-  }
-
-  .slot.ai-best.selected {
-    background: var(--color-success);
-    color: white !important;
-    border-style: solid;
-  }
-
-  /* Step Transitions */
-  .step-content {
-    animation: slideUp 0.5s ease-out;
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .btn-gender {
-    border: none;
-    background: transparent;
-    padding: 6px 16px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: var(--color-text-secondary);
-  }
-
-  .btn-gender.active {
-    background: white;
-    color: var(--color-primary);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  }
-
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: rgba(26, 107, 138, 0.2);
-    border-radius: 10px;
-  }
-    .payment-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .payment-card {
-      background: white;
-      width: 440px;
-      border-radius: 24px;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+--glass: rgba(255, 255, 255, 0.7);
+--glass-border: rgba(255, 255, 255, 0.4);
+--shadow-premium: 0 25px 50px -12px rgba(26, 107, 138, 0.15);
+--font-main: 'Outfit', sans-serif;
+--color-primary: #1A6B8A;
+--color-primary-light: #2196B8;
+--color-primary-bg: rgba(26, 107, 138, 0.08);
+--color-success: #1D9E75;
+--color-success-bg: rgba(29, 158, 117, 0.1);
+--color-warning: #F59E0B;
+--color-warning-bg: rgba(245, 158, 11, 0.1);
+--color-danger: #E53E3E;
+--color-text-primary: #1a202c;
+--color-text-secondary: #718096;
+--color-text-tertiary: #a0aec0;
+--color-background-primary: #ffffff;
+--color-background-secondary: #f7fafc;
+--color-border-primary: #e2e8f0;
+--color-border-secondary: #edf2f7;
+--color-border-tertiary: #f7fafc;
+--border-radius-sm: 8px;
+--border-radius-md: 12px;
+--border-radius-lg: 16px;
+--border-radius-xl: 32px;
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+-webkit-font-smoothing: antialiased;
+}
+
+body {
+background: #ebedee;
+background-image:
+radial-gradient(at 0% 0%, hsla(197, 68%, 32%, 0.15) 0px, transparent 50%),
+radial-gradient(at 50% 0%, hsla(160, 68%, 37%, 0.1) 0px, transparent 50%),
+radial-gradient(at 100% 0%, hsla(20, 68%, 50%, 0.1) 0px, transparent 50%);
+font-family: var(--font-main);
+color: var(--color-text-primary);
+font-size: 14px;
+line-height: 1.5;
+min-height: 100vh;
+overflow-y: auto; /* Enable natural scrolling */
+}
+
+/* Layout */
+.wrap {
+display: grid;
+grid-template-columns: 1fr 400px;
+gap: 40px;
+max-width: 1320px;
+margin: 0 auto;
+padding: 0 30px;
+min-height: 100vh;
+animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.left {
+min-width: 0;
+display: flex;
+flex-direction: column;
+gap: 24px;
+padding: 40px 0;
+}
+
+.right {
+display: flex;
+flex-direction: column;
+gap: 20px;
+padding: 40px 0;
+}
+
+/* Cards & Interaction */
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-xl);
       padding: 32px;
-      box-shadow: 0 40px 100px -20px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
       position: relative;
+      overflow: hidden;
     }
 
-    .payment-tabs {
-      display: flex;
-      background: #f1f5f9;
-      padding: 4px;
-      border-radius: 14px;
-      margin-bottom: 24px;
-    }
+.card:hover {
+transform: translateY(-6px);
+box-shadow: 0 35px 60px -15px rgba(26, 107, 138, 0.2);
+}
 
-    .payment-tab {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 700;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-      color: #64748b;
-    }
+.card-title {
+font-size: 18px;
+font-weight: 700;
+color: var(--color-primary);
+margin-bottom: 24px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
 
-    .payment-tab.active {
+/* Step Bar - Premium Floating */
+.step-bar {
+display: flex;
+gap: 8px;
+background: rgba(255, 255, 255, 0.6);
+
+border: 1px solid var(--glass-border);
+padding: 8px;
+border-radius: 60px;
+margin-bottom: 20px;
+box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+}
+
+.step {
+flex: 1;
+text-align: center;
+padding: 12px 16px;
+border-radius: 50px;
+font-size: 14px;
+font-weight: 600;
+color: var(--color-text-secondary);
+cursor: pointer;
+border: none;
+background: transparent;
+transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+letter-spacing: -0.01em;
+}
+
+.step.active {
+background: var(--color-primary);
+color: white;
+box-shadow: 0 10px 20px -5px rgba(26, 107, 138, 0.4);
+transform: scale(1.05);
+}
+
+/* Form Fields */
+.field {
+margin-bottom: 14px;
+position: relative;
+}
+
+.field label {
+display: block;
+font-size: 13px;
+font-weight: 500;
+color: var(--color-text-secondary);
+margin-bottom: 6px;
+}
+
+.field input,
+.field select,
+.field textarea {
+width: 100%;
+padding: 12px 16px;
+font-family: var(--font-main);
+font-size: 14px;
+border: 1px solid var(--color-border-secondary);
+border-radius: var(--border-radius-md);
+background: var(--color-background-primary);
+color: var(--color-text-primary);
+outline: none;
+transition: all 0.3s ease;
+}
+
+.field input:focus {
+border-color: var(--color-primary);
+box-shadow: 0 0 0 4px rgba(26, 107, 138, 0.1);
+}
+
+/* Service Grid Selection */
+.svc-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+gap: 16px;
+}
+
+.svc-card {
+background: white;
+border-radius: var(--border-radius-lg);
+border: 2px solid transparent;
+padding: 24px;
+cursor: pointer;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.svc-card:hover {
+transform: translateY(-4px);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.svc-card.selected {
+border-color: var(--color-primary);
+background: linear-gradient(145deg, #ffffff, #f0f9ff);
+}
+
+/* AI Intelligence Panel */
+.ai-panel {
+border: 1px solid rgba(77, 192, 232, 0.4);
+background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+border-radius: var(--border-radius-lg);
+padding: 24px;
+position: relative;
+overflow: hidden;
+}
+
+.ai-panel::before {
+content: '';
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: conic-gradient(from 0deg, transparent, rgba(33, 150, 184, 0.1), transparent);
+animation: aiRotate 12s linear infinite;
+}
+
+@keyframes aiRotate {
+100% {
+transform: rotate(360deg);
+}
+}
+
+.ai-dot {
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: var(--color-primary);
+display: inline-block;
+margin-right: 10px;
+animation: aiPulse 2s infinite;
+}
+
+@keyframes aiPulse {
+
+0%,
+100% {
+opacity: 1;
+transform: scale(1);
+}
+
+50% {
+opacity: 0.5;
+transform: scale(1.2);
+}
+}
+
+/* Buttons */
+.btn-full {
+height: 54px;
+border-radius: 16px;
+font-weight: 700;
+transition: all 0.3s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+border: none;
+cursor: pointer;
+}
+
+.btn-primary {
+background: var(--color-primary);
+color: white;
+box-shadow: 0 10px 20px -5px rgba(26, 107, 138, 0.4);
+}
+
+.staff-card {
+border: 1.5px solid var(--color-border-secondary);
+border-radius: var(--border-radius-lg);
+padding: 16px;
+cursor: pointer;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+display: flex;
+align-items: center;
+gap: 14px;
+position: relative;
+overflow: hidden;
+background: white;
+}
+
+.staff-card:hover {
+border-color: var(--color-primary);
+transform: translateY(-3px);
+box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+}
+
+.staff-card.selected {
+border-color: var(--color-primary);
+background: var(--color-primary-bg);
+}
+
+.staff-card.recommended {
+border-color: var(--color-success);
+}
+
+.staff-card.recommended::after {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 4px;
+height: 100%;
+background: var(--color-success);
+}
+
+.staff-name {
+font-weight: 700;
+color: var(--color-text-primary);
+font-size: 14px;
+margin-bottom: 2px;
+}
+
+.staff-spec {
+font-size: 11px;
+color: var(--color-text-secondary);
+margin-bottom: 4px;
+}
+
+.staff-rating {
+font-size: 11px;
+font-weight: 600;
+color: var(--color-warning);
+}
+
+/* Calendar & Slots */
+.calendar-container {
+background: white;
+border-radius: var(--border-radius-lg);
+padding: 15px;
+border: 1px solid var(--color-border-secondary);
+}
+
+.calendar-nav-bar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+padding: 0 5px;
+}
+
+.month-label {
+font-weight: 700;
+color: var(--color-primary);
+font-size: 15px;
+}
+
+.calendar-nav-bar button {
+background: var(--color-background-secondary);
+border: none;
+width: 32px;
+height: 32px;
+border-radius: 50%;
+cursor: pointer;
+color: var(--color-primary);
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.2s;
+}
+
+.calendar-nav-bar button:hover {
+background: var(--color-primary);
+color: white;
+}
+
+.calendar-weekdays {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+text-align: center;
+font-size: 11px;
+font-weight: 700;
+color: var(--color-text-tertiary);
+margin-bottom: 10px;
+text-transform: uppercase;
+}
+
+.calendar-grid {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 4px;
+}
+.toggle-switch {
+width: 44px;
+height: 24px;
+background: #cbd5e1;
+border-radius: 20px;
+position: relative;
+transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+cursor: pointer;
+flex-shrink: 0;
+}
+.toggle-switch.on {
+background: var(--color-primary);
+}
+.toggle-switch::after {
+content: '';
+position: absolute;
+top: 2px;
+left: 2px;
+width: 20px;
+height: 20px;
+background: white;
+border-radius: 50%;
+transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.toggle-switch.on::after {
+left: 22px;
+}
+
+.sl-dot {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+display: inline-block;
+flex-shrink: 0;
+}
+
+.cal-cell {
+aspect-ratio: 1;
+border-radius: 10px;
+transition: all 0.2s;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 13px;
+font-weight: 500;
+}
+
+.cal-cell:hover:not(.disabled) {
+background: var(--color-primary-bg);
+color: var(--color-primary);
+}
+
+.cal-cell.selected {
+background: var(--color-primary) !important;
+color: white !important;
+font-weight: 700;
+box-shadow: 0 4px 12px rgba(26, 107, 138, 0.3);
+}
+
+.cal-cell.today {
+color: var(--color-primary);
+font-weight: 700;
+border: 1px solid var(--color-primary-bg);
+}
+
+.cal-cell.disabled {
+color: var(--color-border-primary);
+cursor: not-allowed;
+}
+
+.schedule-layout {
+display: grid;
+grid-template-columns: 320px 1fr;
+gap: 24px;
+align-items: start;
+}
+
+.time-slots-area {
+background: rgba(255, 255, 255, 0.4);
+border-radius: var(--border-radius-lg);
+padding: 20px;
+border: 1px solid var(--glass-border);
+height: 100%;
+}
+
+.time-section-title {
+font-size: 12px;
+font-weight: 700;
+color: var(--color-text-secondary);
+margin: 16px 0 10px;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.slot-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+gap: 8px;
+}
+
+.slot {
+padding: 10px 5px;
+text-align: center;
+border-radius: 10px;
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+background: white;
+border: 1px solid var(--color-border-secondary);
+color: var(--color-text-secondary);
+}
+
+.slot:hover:not(.busy) {
+border-color: var(--color-primary);
+color: var(--color-primary);
+transform: translateY(-2px);
+}
+
+.slot.selected {
+background: var(--color-primary);
+color: white !important;
+border-color: var(--color-primary);
+box-shadow: 0 4px 10px rgba(26, 107, 138, 0.3);
+}
+
+.slot.busy {
+background: var(--color-background-secondary);
+color: var(--color-border-primary);
+cursor: not-allowed;
+border-color: transparent;
+}
+
+.slot.ai-best {
+border-color: var(--color-success);
+color: var(--color-success);
+border-style: dashed;
+}
+
+.slot.ai-best.selected {
+background: var(--color-success);
+color: white !important;
+border-style: solid;
+}
+
+/* Step Transitions */
+.step-content {
+animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+from {
+opacity: 0;
+transform: translateY(10px);
+}
+
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.btn-gender {
+border: none;
+background: transparent;
+padding: 6px 16px;
+border-radius: 8px;
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s;
+color: var(--color-text-secondary);
+}
+
+.btn-gender.active {
+background: white;
+color: var(--color-primary);
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar {
+width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+background: rgba(26, 107, 138, 0.2);
+border-radius: 10px;
+}
+.payment-modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.6);
+backdrop-filter: blur(8px);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 2000;
+animation: fadeIn 0.4s ease;
+}
+
+.payment-card {
+background: white;
+width: 440px;
+border-radius: 24px;
+padding: 32px;
+box-shadow: 0 40px 100px -20px rgba(0,0,0,0.3);
+position: relative;
+}
+
+.payment-tabs {
+display: flex;
+background: #f1f5f9;
+padding: 4px;
+border-radius: 14px;
+margin-bottom: 24px;
+}
+
+.payment-tab {
+flex: 1;
+padding: 10px;
+text-align: center;
+font-size: 13px;
+font-weight: 700;
+border-radius: 10px;
+cursor: pointer;
+transition: 0.3s;
+color: #64748b;
+}
+
+.payment-tab.active {
+background: white;
+color: var(--color-primary);
+box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.payment-input-group {
+margin-bottom: 20px;
+}
+
+.payment-input-group label {
+display: block;
+font-size: 12px;
+font-weight: 700;
+color: #64748b;
+margin-bottom: 8px;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+}
+
+.payment-input {
+width: 100%;
+padding: 14px 16px;
+border: 1.5px solid #e2e8f0;
+border-radius: 12px;
+font-size: 14px;
+font-family: inherit;
+outline: none;
+transition: 0.3s;
+}
+
+.payment-input:focus {
+border-color: var(--color-primary);
+box-shadow: 0 0 0 4px rgba(26, 107, 138, 0.1);
+}
+
+.upi-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+margin-bottom: 20px;
+}
+
+.upi-app {
+padding: 12px;
+border: 1.5px solid #e2e8f0;
+border-radius: 12px;
+text-align: center;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.upi-app:hover {
+border-color: var(--color-primary);
+background: #f0f9ff;
+}
+
+.upi-app.active {
+border-color: var(--color-primary);
+background: #f0f9ff;
+}
+
+.upi-app span {
+font-size: 11px;
+font-weight: 600;
+display: block;
+}
+
+.payment-total {
+background: #f8fafc;
+padding: 16px;
+border-radius: 16px;
+margin-bottom: 24px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+    /* Client Suggestions */
+    .client-suggestion {
+      position: relative;
       background: white;
-      color: var(--color-primary);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: var(--border-radius-md);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      z-index: 10;
+      max-height: 250px;
+      overflow-y: auto;
+      margin-top: 8px;
+      margin-bottom: 12px;
     }
 
-    .payment-input-group {
-      margin-bottom: 20px;
-    }
-
-    .payment-input-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #64748b;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .payment-input {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-      transition: 0.3s;
-    }
-
-    .payment-input:focus {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 4px rgba(26, 107, 138, 0.1);
-    }
-
-    .upi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .upi-app {
-      padding: 12px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .upi-app:hover {
-      border-color: var(--color-primary);
-      background: #f0f9ff;
-    }
-
-    .upi-app.active {
-      border-color: var(--color-primary);
-      background: #f0f9ff;
-    }
-
-    .upi-app span {
-      font-size: 11px;
-      font-weight: 600;
-      display: block;
-    }
-
-    .payment-total {
-      background: #f8fafc;
-      padding: 16px;
-      border-radius: 16px;
-      margin-bottom: 24px;
+    .cs-item {
+      padding: 12px 16px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-bottom: 1px solid var(--color-border-tertiary);
     }
-  </style>
 
-  <h2 style="position:absolute;left:-9999px">MedhikaArts live appointment booking module with AI slot intelligence and real
-    form logic</h2>
+    .cs-item:last-child {
+      border-bottom: none;
+    }
 
-  <div id="root"></div>
-  <div id="payment-gateway-container"></div>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    .cs-item:hover {
+      background: var(--color-background-secondary);
+    }
+
+    .cs-name {
+      font-weight: 700;
+      color: var(--color-text-primary);
+      font-size: 14px;
+    }
+
+    .cs-sub {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+    }
+
+    .av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .av-t { background: #1a6b8a; }
+    .av-b { background: #1d9e75; }
+    .av-p { background: #f59e0b; }
+    .av-c { background: #e53e3e; }
+    .av-k { background: #8b5cf6; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-blue { background: #eff6ff; color: #1e40af; }
+    .badge-green { background: #f0fdf4; color: #166534; }
+</style>
+</head>
+<body>
+
+<h2 style="position:absolute;left:-9999px">MedhikaArts live appointment booking module with AI slot intelligence and
+  real
+  form logic</h2>
+
+<div id="root"></div>
+<div id="payment-gateway-container"></div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = (window.location.port === '5000') 
+      ? '/api' 
+      : `${window.location.protocol}//${window.location.hostname}:5000/api`;
   let CLIENTS = [];
   let BOOKINGS = [];
   let SERVICES = [];
   let STAFF = [];
   let FEMALE_SERVICES_IDS = [];
   let MALE_SERVICES_IDS = [];
-  
-  
-  
 
-  
-  
 
-  
-  
-  
+
+
+
+
+
+
+
+
 
 
   async function loadFromDB() {
@@ -751,13 +838,72 @@
       BOOKINGS = await bRes.json();
       STAFF = await sRes.json();
       SERVICES = await svRes.json();
-      
+
       FEMALE_SERVICES_IDS = SERVICES.filter(s => s.gender === 'female' || s.gender === 'unisex').map(s => s.id);
       MALE_SERVICES_IDS = SERVICES.filter(s => s.gender === 'male' || s.gender === 'unisex').map(s => s.id);
+      updateConnectionStatus(true);
     } catch (err) {
       console.error('API Error:', err);
+      updateConnectionStatus(false);
     }
+
+    // --- Pre-fill from URL ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const pName = urlParams.get('clientName');
+    const pPhone = urlParams.get('clientPhone');
+    const pServices = urlParams.get('services');
+    const pEditId = urlParams.get('editId');
+
+    if (pEditId) {
+      state.editId = pEditId;
+      // Find the existing booking to pre-fill more accurately
+      const existing = BOOKINGS.find(b => b.id === pEditId);
+      if (existing) {
+        state.client = existing.clientId || null;
+        state.clientQuery = existing.clientName;
+        state.clientPhone = existing.phone || '';
+        state.selectedServices = existing.services || [];
+        state.selectedStaff = existing.staffId || null;
+        state.selectedTime = existing.time || null;
+        if (existing.date) {
+            const parsedDate = new Date(existing.date);
+            if (!isNaN(parsedDate)) {
+                state.selectedDate = parsedDate;
+                state.scheduleDate = parsedDate;
+                state.calYear = parsedDate.getFullYear();
+                state.calMonth = parsedDate.getMonth();
+            }
+        }
+        state.notes = existing.notes || '';
+        state.source = existing.source || 'walk-in';
+      }
+    }
+
+    if (pName) {
+      state.clientQuery = pName;
+      const found = CLIENTS.find(c => c.name.toLowerCase() === pName.toLowerCase());
+      if (found) {
+        state.client = found.id;
+        state.clientPhone = found.phone || pPhone || '';
+      } else {
+        state.clientPhone = pPhone || '';
+      }
+    }
+    if (pServices) {
+      const sIds = pServices.split(',').filter(x => x);
+      state.selectedServices = sIds;
+    }
+
     render();
+  }
+
+  function updateConnectionStatus(online) {
+    const statusDot = document.getElementById('connection-status-dot');
+    const statusText = document.getElementById('connection-status-text');
+    if (statusDot && statusText) {
+      statusDot.style.background = online ? '#16a34a' : '#dc2626';
+      statusText.textContent = online ? 'Live' : 'Offline';
+    }
   }
 
   async function saveToDB(client, booking) {
@@ -770,11 +916,21 @@
         });
       }
       if (booking) {
-        await fetch(`${API_URL}/bookings`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(booking)
-        });
+        if (state.editId) {
+          // Update existing
+          await fetch(`${API_URL}/bookings/${state.editId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(booking)
+          });
+        } else {
+          // Create new
+          await fetch(`${API_URL}/bookings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(booking)
+          });
+        }
       }
     } catch (err) {
       console.error('API Save Error:', err);
@@ -790,6 +946,7 @@
     client: null,
     clientQuery: '',
     clientPhone: '',
+    clientLocation: '',
     serviceQuery: '',
     showSuggestions: false,
     selectedServices: [],
@@ -812,7 +969,8 @@
     showPayment: false,
     paymentMethod: 'upi',
     paymentProcessing: false,
-    highlightedServiceId: null
+    highlightedServiceId: null,
+    editId: null
   };
 
   // --- Sync Date from URL ---
@@ -821,7 +979,7 @@
   if (paramDate) {
     const d = new Date(paramDate);
     if (!isNaN(d.getTime())) {
-      d.setHours(0,0,0,0);
+      d.setHours(0, 0, 0, 0);
       state.selectedDate = d;
       state.scheduleDate = d;
       state.calYear = d.getFullYear();
@@ -872,11 +1030,19 @@
   function staffForServices() {
     const genderStaff = STAFF.filter(st => st.gender === state.selectedGender);
     let eligible = genderStaff;
-    
+
     if (state.selectedServices.length) {
-      eligible = eligible.filter(st => state.selectedServices.every(sid => st.services.includes(sid)));
+      eligible = eligible.filter(st => {
+        // If staff has "all" in services or the services array is just placeholder IDs (like sf1, sm1) 
+        // while we use svc- IDs, allow them to be selected to avoid blocking the user.
+        const hasAll = st.services.includes('all') || st.services.some(s => s.startsWith('sf') || s.startsWith('sm'));
+        if (hasAll) return true;
+        
+        // Otherwise, do the strict check
+        return state.selectedServices.every(sid => st.services.includes(sid));
+      });
     }
-    
+
     // Prevent double-booking: exclude staff already booked at the selected date & time
     if (state.selectedDate && state.selectedTime) {
       const dateStr = toLocalISO(state.selectedDate);
@@ -888,22 +1054,31 @@
         return !isBooked;
       });
     }
-    
+
     return eligible;
   }
 
   function getWhatsAppUrl() {
     const client = state.client ? CLIENTS.find(c => c.id === state.client) : null;
-    const name = client ? client.name : state.clientQuery;
-    let phone = client ? client.phone : state.clientPhone || '';
+    const name = client ? client.name : (state.clientQuery || 'Guest');
+    let phone = client ? client.phone : (state.clientPhone || '');
 
-    if (!phone) return null;
+    console.log('Constructing WhatsApp URL for:', { name, phone });
+
+    if (!phone) {
+      console.warn('WhatsApp failed: No phone number provided.');
+      return null;
+    }
 
     let cleanPhone = String(phone).replace(/\D/g, '');
     if (cleanPhone.startsWith('0')) cleanPhone = cleanPhone.substring(1);
     if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
 
-    const svcs = state.selectedServices.map(id => SERVICES.find(x => x.id === id)?.name || 'Unknown Service').join(', ');
+    const svcs = state.selectedServices.map(id => {
+      const s = SERVICES.find(x => String(x.id) === String(id));
+      return s ? s.name : 'Service';
+    }).join(', ');
+    
     const dateStr = state.selectedDate ? fmtFull(state.selectedDate) : '';
     const timeStr = state.selectedTime ? format12h(state.selectedTime) : '';
     const total = rupee(totalPrice());
@@ -912,24 +1087,30 @@
 
     const rawMessage = `*MedhikaArts Booking*\n--------------------------\n*Hello ${title}. ${name}*,\n\nYour booking for *${svcs}* is confirmed!\n\n📅 *Date:* ${dateStr}\n🕐 *Time:* ${timeStr}\n🆔 *Booking ID:* ${bookingId}\n\n_Thank you for choosing MedhikaArts!_`;
 
-    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(rawMessage)}`;
+    const finalUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(rawMessage)}`;
+    console.log('WhatsApp URL generated:', finalUrl);
+    return finalUrl;
   }
 
-  function sendWhatsApp() {
-    const wpUrl = getWhatsAppUrl();
-    if (!wpUrl) {
-      alert("No phone number found for this client.");
-      return;
+  function sendWhatsApp(isAuto = false) {
+    let phone = (state.client ? CLIENTS.find(c => c.id === state.client)?.phone : state.clientPhone) || '';
+    
+    // If phone is missing and NOT auto, prompt for it
+    if (!phone || phone.trim() === '') {
+      if (isAuto) return; // Skip prompt on auto-trigger
+      phone = prompt("Enter Client's WhatsApp number (10 digits):");
+      if (!phone) return;
+      state.clientPhone = phone;
     }
 
-    
-    try {
-      const newWin = window.open(wpUrl, '_blank');
-      if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') {
-        window.open(wpUrl, '_top');
+    const wpUrl = getWhatsAppUrl();
+    if (wpUrl) {
+      console.log('Opening WhatsApp URL:', wpUrl);
+      const targetWin = window.top || window;
+      const win = targetWin.open(wpUrl, '_blank');
+      if (!win && !isAuto) {
+        alert("WhatsApp popup was blocked! Please allow popups for this site.");
       }
-    } catch (e) {
-      window.open(wpUrl, '_top');
     }
   }
 
@@ -966,7 +1147,7 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
   async function confirm() {
     try {
       if (!validate()) { render(); return; }
-      state.bookingId = genId();
+      state.bookingId = state.editId || genId();
 
       let client = state.client ? CLIENTS.find(c => c.id === state.client) : null;
       let isNewClient = false;
@@ -976,9 +1157,11 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
           id: 'c' + (CLIENTS.length + 1),
           name: state.clientQuery || 'Guest',
           phone: state.clientPhone || '',
+          location: state.clientLocation || '',
           email: '',
           pts: 0,
           ltv: rupee(totalPrice()),
+          joinedDate: state.selectedDate, // Set to booking date as requested
           av: 'av-' + ['t', 'b', 'p', 'c', 'k'][Math.floor(Math.random() * 5)]
         };
         CLIENTS.push(client);
@@ -987,7 +1170,7 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
         const ltvStr = client.ltv ? String(client.ltv) : '0';
         const ltvNum = parseInt(ltvStr.replace(/[^0-9]/g, '')) || 0;
         client.ltv = rupee(ltvNum + totalPrice());
-        client.pts = (client.pts || 0) + Math.floor(totalPrice() / 10);
+        client.pts = (client.pts || 0) + 5; // Flat 5 points for returning client as requested
       }
 
       const newBooking = {
@@ -1002,44 +1185,58 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
         status: 'upcoming',
         notes: state.notes,
         source: state.source,
-        deposit: state.deposit
+        location: state.clientLocation,
+        deposit: state.deposit,
+        createdAt: new Date().toISOString()
       };
-      BOOKINGS.push(newBooking);
-      
-      let waWin = null;
-      if (state.notify.includes('whatsapp')) {
-        const wpUrl = getWhatsAppUrl();
-        if (wpUrl) {
-          waWin = window.open(wpUrl, '_blank');
-        }
-      }
-
-      await saveToDB(isNewClient ? client : null, newBooking);
+      await saveToDB(client, newBooking, !isNewClient);
 
       state.confirmed = true;
       render();
       setTimeout(fireConfetti, 100);
-      
-      // If window.open was blocked, we don't force redirect here because we don't want to lose the confirmation page.
-      // The user can click the manual WhatsApp button.
-      // Signal dashboard to refresh
-      if (window.parent) {
-        window.parent.postMessage('refreshData', '*');
+
+      // Open WhatsApp in a background tab after the confirmation screen is shown
+      // 1. Trigger WhatsApp immediately
+      if (state.notify.includes('whatsapp')) {
+        sendWhatsApp(true); 
       }
+
+      // 2. Signal data refresh
+      const refreshMsg = 'refreshData';
+      if (window.parent && window.parent !== window) window.parent.postMessage(refreshMsg, '*');
+      if (window.opener) window.opener.postMessage(refreshMsg, '*');
+      try {
+        const bc = new BroadcastChannel('medhika_sync');
+        bc.postMessage(refreshMsg);
+        bc.close();
+      } catch (e) {}
+
+      // 3. Sequenced checkout trigger (Wait 4 seconds for WhatsApp tab to initiate)
+      setTimeout(() => {
+        window._openCheckoutWindow();
+      }, 4000); 
     } catch (err) {
       console.error("Confirmation Error:", err);
       alert("Error confirming: " + err.message);
     }
   }
 
-  async function saveToDB(newClient, booking) {
+  async function saveToDB(newClient, booking, isUpdate = false) {
     try {
       if (newClient) {
-        await fetch(`${API_URL}/clients`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newClient)
-        });
+        if (isUpdate) {
+          await fetch(`${API_URL}/clients/${encodeURIComponent(newClient.id)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newClient)
+          });
+        } else {
+          await fetch(`${API_URL}/clients`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newClient)
+          });
+        }
       }
       await fetch(`${API_URL}/bookings`, {
         method: 'POST',
@@ -1048,6 +1245,7 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
       });
     } catch (err) {
       console.error('Save to DB Error:', err);
+      alert('Error saving booking or client data: ' + err.message);
     }
   }
 
@@ -1220,15 +1418,15 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
       ${state.step === 4 ? buildStep4() : ''}
       ${state.step === 5 ? buildStep5() : ''}
     </div>
-    <div style="display:flex;gap:12px;margin-top:16px">
-      ${state.step > 1 ? `<button class="btn-full btn-secondary" id="btnBack" style="width:auto;padding:0 30px">← Back</button>` : ''}
-      ${state.step < 5 ? `<button class="btn-full btn-primary" id="btnNext" style="flex:1">Continue to ${steps[state.step]} →</button>` : ''}
-      ${state.step === 5 ? `<button class="btn-full btn-primary" id="btnConfirm" style="flex:1">Confirm appointment</button>` : ''}
-    </div>
   </div>
   <div class="right">
     ${buildSummaryPanel()}
     ${buildAIPanel()}
+    <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px">
+      ${state.step < 5 ? `<button class="btn-full btn-primary" id="btnNext" style="width:100%">Continue to ${steps[state.step]} →</button>` : ''}
+      ${state.step === 5 ? `<button class="btn-full btn-primary" id="btnConfirm" style="width:100%">${state.editId ? 'Update' : 'Confirm'} appointment</button>` : ''}
+      ${state.step > 1 ? `<button class="btn-full btn-secondary" id="btnBack" style="width:100%; background:white; border:1px solid var(--color-border-primary)">← Back</button>` : ''}
+    </div>
     ${buildSchedulePanel()}
   </div>
 </div>`;
@@ -1237,10 +1435,16 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
 
   function buildStep1() {
     const q = state.clientQuery.toLowerCase();
-    const matches = q.length > 0 ? CLIENTS.filter(c => c.name.toLowerCase().includes(q) || (c.phone && c.phone.includes(q))).sort((a,b) => a.name.localeCompare(b.name)) : [];
+    const matches = q.length > 0 ? CLIENTS.filter(c => c.name.toLowerCase().includes(q) || (c.phone && c.phone.includes(q))).sort((a, b) => a.name.localeCompare(b.name)) : [];
     const selected = state.client ? CLIENTS.find(c => c.id === state.client) : null;
     return `<div class="card">
-  <div class="card-title">Client details</div>
+  <div class="card-title">
+    Client details
+    <div style="margin-left:auto; display:flex; align-items:center; gap:6px; font-size:10px; font-weight:600; background:#f8fafc; padding:2px 8px; border-radius:12px; border:1px solid var(--color-border-secondary);">
+      <span id="connection-status-dot" style="width:5px; height:5px; border-radius:50%; background:#94a3b8;"></span>
+      <span id="connection-status-text" style="color:var(--color-text-secondary);">Connecting...</span>
+    </div>
+  </div>
   ${selected ? `<div class="cs-item" style="border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);margin-bottom:10px;padding:10px 12px">
     <div class="av ${selected.av}">${selected.name.split(' ').map(x => x[0]).join('')}</div>
     <div><div class="cs-name">${selected.name}</div><div class="cs-sub">${selected.phone} · ${selected.pts} pts · LTV ${selected.ltv}</div></div>
@@ -1263,6 +1467,10 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
     <label>Phone number (for WhatsApp invoice)</label>
     <input type="tel" id="clientPhoneInput" value="${state.clientPhone}" placeholder="+91 00000 00000">
     ${state.errors.phone ? `<div class="error">${state.errors.phone}</div>` : ''}
+  </div>
+  <div class="field">
+    <label>Location / Address</label>
+    <input type="text" id="clientLocationInput" value="${state.clientLocation}" placeholder="Locality, Landmark, or Address">
   </div>` : ''}
   ${matches.length > 0 && !selected ? `<div class="client-suggestion">${matches.map(c => `
     <div class="cs-item" data-cid="${c.id}">
@@ -1281,13 +1489,6 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
       <option value="online" ${state.source === 'online' ? 'selected' : ''}>Online</option>
       <option value="instagram" ${state.source === 'instagram' ? 'selected' : ''}>Instagram</option>
     </select></div>
-    <div class="field"><label>Branch location</label>
-    <select id="branchSelect">
-      <option>Banjara Hills, Hyderabad</option>
-      <option>Jubilee Hills, Hyderabad</option>
-      <option>Koramangala, Bangalore</option>
-      <option>Indiranagar, Bangalore</option>
-    </select></div>
   </div>
 </div>`;
   }
@@ -1295,45 +1496,48 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
   function buildStep2() {
     let filteredServices = SERVICES.filter(s => s.gender === state.selectedGender || s.gender === 'unisex');
     if (state.serviceQuery && state.serviceQuery.trim()) {
-        const q = state.serviceQuery.toLowerCase();
-        filteredServices = filteredServices.filter(s => s.name.toLowerCase().includes(q) || s.cat.toLowerCase().includes(q));
+      const q = state.serviceQuery.toLowerCase();
+      filteredServices = filteredServices.filter(s => s.name.toLowerCase().includes(q) || s.cat.toLowerCase().includes(q));
     }
     const cats = [...new Set(filteredServices.map(s => s.cat))];
-    return `<div class="card">
-  <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+    return `<div class="card" style="display: flex; flex-direction: column; max-height: 80vh;">
+  <div class="card-title" style="display:flex;justify-content:space-between;align-items:center; flex-shrink: 0; margin-bottom: 16px;">
     <span>Select services for ${state.selectedGender === 'male' ? 'Men' : 'Women'}</span>
     <input type="text" id="serviceSearchInput" value="${state.serviceQuery || ''}" placeholder="Search services..." style="padding:6px 12px; border:1px solid var(--color-border-secondary); border-radius:6px; font-size:13px; width:200px; font-weight:normal;">
   </div>
-  ${state.errors.services ? `<div class="error" style="margin-bottom:10px">${state.errors.services}</div>` : ''}
-  ${cats.map(cat => `
-    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;margin-top:16px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">${cat}</div>
-    <div class="svc-grid">${filteredServices.filter(s => s.cat === cat).map(s => {
-      const sel = state.selectedServices.map(String).includes(String(s.id));
-      const prices = s.prices || [s.price];
-      const selectedIdx = state.servicePriceSelections[s.id] || 0;
-      const currentPrice = prices[selectedIdx] || s.price;
-      
-      return `<div class="svc-card ${sel ? 'selected' : ''}" onclick="window._toggleSvc('${s.id}')">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-          <span style="font-size:20px">${s.icon}</span>
-          ${sel ? '<span style="color:var(--color-primary);font-size:16px">✓</span>' : ''}
-        </div>
-        <div class="svc-name ${sel ? 'selected-text' : ''}" style="font-weight:700;font-size:15px;color:var(--color-text-primary);margin-bottom:4px;letter-spacing:-0.01em;line-height:1.2;">${s.name}</div>
-        
-        ${prices.length > 1 ? `
-          <div style="margin:8px 0;" onclick="event.stopPropagation()">
-            <select class="price-select" style="width:100%;font-size:10px;padding:4px;border-radius:4px;border:1px solid var(--color-border);background:white;" onchange="window._setSvcPrice('${s.id}', this.value)">
-              ${prices.map((p, i) => `<option value="${i}" ${selectedIdx === i ? 'selected' : ''}>${s.variants && s.variants[i] ? s.variants[i] : 'Option ' + (i+1)}: ${rupee(p)}</option>`).join('')}
-            </select>
-          </div>
-        ` : ''}
+  ${state.errors.services ? `<div class="error" style="margin-bottom:10px; flex-shrink: 0;">${state.errors.services}</div>` : ''}
+  
+  <div class="services-scroll-container" style="overflow-y: auto; flex: 1; padding-right: 8px;">
+    ${cats.map(cat => `
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;margin-top:16px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">${cat}</div>
+      <div class="svc-grid">${filteredServices.filter(s => s.cat === cat).map(s => {
+        const sel = state.selectedServices.map(String).includes(String(s.id));
+        const prices = s.prices || [s.price];
+        const selectedIdx = state.servicePriceSelections[s.id] || 0;
+        const currentPrice = prices[selectedIdx] || s.price;
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto">
-          <span class="svc-meta" style="font-size:11px;color:var(--color-text-secondary)">${s.duration} min</span>
-          <span class="svc-price" style="font-weight:800;font-size:15px;color:var(--color-primary)">${rupee(currentPrice)}</span>
-        </div>
-      </div>`;
-    }).join('')}</div>`).join('')}
+        return `<div class="svc-card ${sel ? 'selected' : ''}" onclick="window._toggleSvc('${s.id}')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <span style="font-size:20px">${s.icon}</span>
+            ${sel ? '<span style="color:var(--color-primary);font-size:16px">✓</span>' : ''}
+          </div>
+          <div class="svc-name ${sel ? 'selected-text' : ''}" style="font-weight:700;font-size:15px;color:var(--color-text-primary);margin-bottom:4px;letter-spacing:-0.01em;line-height:1.2;">${s.name}</div>
+          
+          ${prices.length > 1 ? `
+            <div style="margin:8px 0;" onclick="event.stopPropagation()">
+              <select class="price-select" style="width:100%;font-size:10px;padding:4px;border-radius:4px;border:1px solid var(--color-border);background:white;" onchange="window._setSvcPrice('${s.id}', this.value)">
+                ${prices.map((p, i) => `<option value="${i}" ${selectedIdx === i ? 'selected' : ''}>${s.variants && s.variants[i] ? s.variants[i] : 'Option ' + (i + 1)}: ${rupee(p)}</option>`).join('')}
+              </select>
+            </div>
+          ` : ''}
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto">
+            <span class="svc-meta" style="font-size:11px;color:var(--color-text-secondary)">${s.duration} min</span>
+            <span class="svc-price" style="font-weight:800;font-size:15px;color:var(--color-primary)">${rupee(currentPrice)}</span>
+          </div>
+        </div>`;
+      }).join('')}</div>`).join('')}
+  </div>
 </div>`;
   }
 
@@ -1392,9 +1596,9 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
   function buildTimeSlots() {
     let dateStr = '';
     if (state.selectedDate) {
-       dateStr = toLocalISO(state.selectedDate);
+      dateStr = toLocalISO(state.selectedDate);
     }
-    
+
     // Count existing bookings per time slot for that date
     const slotCounts = {};
     if (dateStr) {
@@ -1423,7 +1627,7 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
         const best = t === AI_BEST && !busy && !isPastSlot;
         const sel = state.selectedTime === t;
         const disabled = busy || isPastSlot;
-        
+
         return `<div class="slot ${disabled ? 'disabled' : best ? 'ai-best' : ''} ${sel && !disabled ? 'selected' : ''}" 
                      style="${isPastSlot ? 'opacity: 0.4; cursor: not-allowed; border-color: #eee; background: #fafafa;' : ''} ${busy ? 'background: #fdf2f2; color: #9b2c2c; border-color: #feb2b2;' : ''}"
                      data-time="${t}">${format12h(t)}${best ? ' ★' : ''}</div>`;
@@ -1557,10 +1761,10 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
     const svcs = state.selectedServices.map(id => SERVICES.find(x => x.id === id) || { name: 'Unknown Service' });
     const staff = state.selectedStaff ? STAFF.find(x => x.id === state.selectedStaff) : null;
     const total = totalPrice();
-    return `<div class="step-content" style="max-width:500px;margin:0 auto;padding:20px 0">
+    return `<div class="step-content" style="max-width:500px; margin:0 auto; padding:20px 0; display:flex; flex-direction:column; gap:16px;">
   <div class="confirm-box">
     <div class="confirm-icon">✦</div>
-    <div class="confirm-title">Appointment confirmed!</div>
+    <div class="confirm-title">${state.editId ? 'Appointment updated!' : 'Appointment confirmed!'}</div>
     <div class="confirm-sub">
       ${client ? client.name : state.clientQuery} · ${svcs.map(s => s.name).join(', ')}<br>
       ${state.selectedDate ? fmtFull(state.selectedDate) : ''} at ${state.selectedTime ? format12h(state.selectedTime) : ''}<br>
@@ -1568,25 +1772,26 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
     </div>
     <div class="confirm-id">${state.bookingId}</div>
   </div>
-  <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px">
-    <a href="${getWhatsAppUrl() || '#'}" target="_blank" class="btn-full btn-primary" style="background:#25D366; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2); text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px;">
-      <span style="font-size:20px">📱</span> Send WhatsApp Confirmation
-    </a>
-  </div>
-  <div class="card" style="margin-top:14px">
+  
+  <button class="btn-full btn-primary" style="background:#25D366; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2); width:100%;" onclick="window._sendWP()">
+    <span style="font-size:20px">📱</span> Manual Resend WhatsApp
+  </button>
+
+  <div class="card">
     <div class="card-title">What happens next</div>
-    <div style="font-size:13px;display:flex;flex-direction:column;gap:8px">
-      ${state.notify.includes('whatsapp') ? `<div style="display:flex;gap:8px;align-items:flex-start"><span style="color:#1D9E75">✓</span><span>WhatsApp confirmation sent to client now</span></div>` : ''}
-      ${state.notify.includes('email') ? `<div style="display:flex;gap:8px;align-items:flex-start"><span style="color:#1D9E75">✓</span><span>Email confirmation sent with appointment details</span></div>` : ''}
-      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:#1D9E75">✓</span><span>Automatic reminder 24h and 2h before appointment</span></div>
-      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:#1D9E75">✓</span><span>Staff calendar updated — ${staff ? staff.name : 'stylist'} notified</span></div>
-      ${state.deposit ? `<div style="display:flex;gap:8px;align-items:flex-start"><span style="color:#F59E0B">⊙</span><span>Deposit link (${rupee(Math.round(total * 0.3))}) sent via Razorpay</span></div>` : ''}
-      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:#4DC0E8">◈</span><span>Draft invoice created — complete at checkout</span></div>
+    <div style="font-size:13px; display:flex; flex-direction:column; gap:8px">
+      ${state.notify.includes('whatsapp') ? `<div style="display:flex; gap:8px; align-items:flex-start"><span style="color:#1D9E75">✓</span><span>WhatsApp confirmation sent to client now</span></div>` : ''}
+      ${state.notify.includes('email') ? `<div style="display:flex; gap:8px; align-items:flex-start"><span style="color:#1D9E75">✓</span><span>Email confirmation sent with appointment details</span></div>` : ''}
+      <div style="display:flex; gap:8px; align-items:flex-start"><span style="color:#1D9E75">✓</span><span>Automatic reminder 24h and 2h before appointment</span></div>
+      <div style="display:flex; gap:8px; align-items:flex-start"><span style="color:#1D9E75">✓</span><span>Staff calendar updated — ${staff ? staff.name : 'stylist'} notified</span></div>
+      ${state.deposit ? `<div style="display:flex; gap:8px; align-items:flex-start"><span style="color:#F59E0B">⊙</span><span>Deposit link (${rupee(Math.round(total * 0.3))}) sent via Razorpay</span></div>` : ''}
+      <div style="display:flex; gap:8px; align-items:flex-start"><span style="color:#4DC0E8">◈</span><span>Draft invoice created — complete at checkout</span></div>
     </div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
-    <button class="btn-full btn-secondary" onclick="window._reset(); if(window.parent && window.parent.closeBooking) window.parent.closeBooking();">+ New booking</button>
-    <button class="btn-full btn-primary" onclick="window._openHostedPayment()" style="background: #5469d4; box-shadow: 0 10px 20px rgba(84, 105, 212, 0.3);">Pay Securely (Redirect) ↗</button>
+
+  <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">
+    <button class="btn-full btn-secondary" style="width:100%; background:white; border:1px solid var(--color-border-primary);" onclick="window._reset(); if(window.parent && window.parent.closeBooking) window.parent.closeBooking();">+ New booking</button>
+    <button class="btn-full btn-primary" onclick="window._openCheckoutWindow()" style="width:100%; background: #5469d4; box-shadow: 0 10px 20px rgba(84, 105, 212, 0.3);">Go to checkout ↗</button>
   </div>
 </div>`;
   }
@@ -1594,7 +1799,7 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
   function buildPayment() {
     if (!state.showPayment) return '';
     const total = totalPrice();
-    
+
     return `<div class="payment-modal" onclick="window._closePayment()">
       <div class="payment-card" onclick="event.stopPropagation()">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
@@ -1677,20 +1882,24 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
     const total = totalPrice();
     const dur = totalDuration();
     const client = state.client ? CLIENTS.find(c => c.id === state.client) : null;
-    
+
     let pastServicesHTML = '';
     if (client) {
-      const pastBookings = BOOKINGS.filter(b => b.clientId === client.id && b.status !== 'cancelled')
-        .sort((a, b) => new Date(b.date.split('T')[0]) - new Date(a.date.split('T')[0])).reverse();
-      
+      const pastBookings = BOOKINGS.filter(b => b.clientId === client.id && b.status !== 'cancelled' && b.date)
+        .sort((a, b) => {
+          const dateA = a.date.includes('T') ? a.date.split('T')[0] : a.date;
+          const dateB = b.date.includes('T') ? b.date.split('T')[0] : b.date;
+          return new Date(dateB) - new Date(dateA);
+        }).reverse();
+
       if (pastBookings.length > 0) {
         const lastB = pastBookings[0];
-        const lastDate = lastB.date.includes('T') ? lastB.date.split('T')[0] : lastB.date;
-        const lastSvcs = lastB.services.map(sId => {
+        const lastDate = (lastB.date && lastB.date.includes('T')) ? lastB.date.split('T')[0] : (lastB.date || '');
+        const lastSvcs = (lastB.services || []).map(sId => {
           const s = SERVICES.find(x => x.id === sId);
           return s ? s.name : 'Unknown Service';
         }).join(', ');
-        
+
         const lastDateObj = new Date(lastDate);
         let dateStr = lastDateObj.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
         if (dateStr === 'Invalid Date') dateStr = lastDate; // fallback
@@ -1713,7 +1922,10 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
   ${state.selectedDate ? `<div style="font-size:12px;margin-top:8px;color:var(--color-text-secondary)">Date: <span style="color:var(--color-text-primary);font-weight:500">${fmtFull(state.selectedDate)}</span></div>` : ''}
   ${state.selectedTime ? `<div style="font-size:12px;margin-top:4px;color:var(--color-text-secondary)">Time: <span style="color:var(--color-text-primary);font-weight:500">${format12h(state.selectedTime)}</span></div>` : ''}
   ${dur ? `<div style="font-size:12px;margin-top:4px;color:var(--color-text-secondary)">Duration: <span style="font-weight:500">${dur} min</span></div>` : ''}
-  ${total ? `<div style="font-size:16px;font-weight:500;color:#1A6B8A;margin-top:12px;padding-top:10px;border-top:0.5px solid var(--color-border-secondary)">${rupee(total)}</div>` : ''}
+  ${total ? `<div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; font-weight:800; color:var(--color-primary); margin-top:16px; padding-top:12px; border-top:1.5px solid var(--color-border-secondary);">
+    <span>Total</span>
+    <span>${rupee(total)}</span>
+  </div>` : ''}
 </div>`;
   }
 
@@ -1727,7 +1939,7 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
         usages.forEach(u => {
           clientCounts[u.clientName] = (clientCounts[u.clientName] || 0) + 1;
         });
-        const sortedClients = Object.entries(clientCounts).sort((a,b) => b[1]-a[1]).slice(0, 3);
+        const sortedClients = Object.entries(clientCounts).sort((a, b) => b[1] - a[1]).slice(0, 3);
         const totalClients = new Set(usages.map(u => u.clientId)).size;
 
         return `<div class="ai-panel" style="border-color: var(--color-primary);">
@@ -1765,13 +1977,13 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
         state.client = null;
         // Update suggestions without full re-render to avoid losing focus
         const q = state.clientQuery.toLowerCase();
-        const matches = q.length > 0 ? CLIENTS.filter(c => c.name.toLowerCase().includes(q) || (c.phone && c.phone.includes(q))).sort((a,b) => a.name.localeCompare(b.name)) : [];
+        const matches = q.length > 0 ? CLIENTS.filter(c => c.name.toLowerCase().includes(q) || (c.phone && c.phone.includes(q))).sort((a, b) => a.name.localeCompare(b.name)) : [];
         let sugBox = document.querySelector('.client-suggestion');
         if (matches.length > 0 && !state.client) {
           if (!sugBox) {
             sugBox = document.createElement('div');
             sugBox.className = 'client-suggestion';
-            cs.parentElement.after(sugBox);
+            cs.after(sugBox);
           }
           sugBox.innerHTML = matches.map(c => `
           <div class="cs-item" data-cid="${c.id}">
@@ -1782,6 +1994,20 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
           sugBox.querySelectorAll('[data-cid]').forEach(el => {
             el.addEventListener('click', () => { state.client = el.dataset.cid; state.clientQuery = ''; render(); });
           });
+        } else if (q.length > 0 && matches.length === 0 && !state.client) {
+          if (!sugBox) {
+            sugBox = document.createElement('div');
+            sugBox.className = 'client-suggestion';
+            cs.after(sugBox);
+          }
+          sugBox.innerHTML = `
+            <div class="cs-item" style="cursor:default; opacity:0.8;">
+              <div class="av" style="background:#cbd5e1;">?</div>
+              <div>
+                <div class="cs-name">No matching clients found</div>
+                <div class="cs-sub">A new profile will be created for "${state.clientQuery}"</div>
+              </div>
+            </div>`;
         } else if (sugBox) {
           sugBox.remove();
         }
@@ -1789,6 +2015,9 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
     }
     const cpi = document.getElementById('clientPhoneInput');
     if (cpi) cpi.addEventListener('input', e => state.clientPhone = e.target.value);
+    
+    const cli = document.getElementById('clientLocationInput');
+    if (cli) cli.addEventListener('input', e => state.clientLocation = e.target.value);
 
     const ssi = document.getElementById('serviceSearchInput');
     if (ssi) {
@@ -1797,8 +2026,8 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
         render();
         const newSsi = document.getElementById('serviceSearchInput');
         if (newSsi) {
-            newSsi.focus();
-            newSsi.selectionStart = newSsi.selectionEnd = newSsi.value.length;
+          newSsi.focus();
+          newSsi.selectionStart = newSsi.selectionEnd = newSsi.value.length;
         }
       });
     }
@@ -1842,9 +2071,9 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
     document.querySelectorAll('.step[data-step]').forEach(el => {
       el.addEventListener('click', () => {
         const n = parseInt(el.dataset.step);
-        if (n < state.step) { 
-          state.step = n; 
-          render(); 
+        if (n < state.step) {
+          state.step = n;
+          render();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
@@ -1858,33 +2087,73 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
       }
       if (state.step === 2 && !state.selectedServices.length) { state.errors.services = 'Select at least one service'; render(); return; }
       if (state.step === 3) { if (!state.selectedDate) { state.errors.date = 'Pick a date'; render(); return; } if (!state.selectedTime) { state.errors.time = 'Pick a time'; render(); return; } }
+      if (state.step === 4) {
+        // No strict validation for staff, AI will auto-assign if none selected
+      }
       state.step++; render();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (state.step === 4 && state.selectedDate && state.selectedTime) fetchAIInsight();
+      if (state.step === 5) render(); // Double check render for review screen
     });
     const btnBack = document.getElementById('btnBack');
-    if (btnBack) btnBack.addEventListener('click', () => { 
-      state.step--; 
-      render(); 
+    if (btnBack) btnBack.addEventListener('click', () => {
+      state.step--;
+      render();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     const btnConfirm = document.getElementById('btnConfirm');
     if (btnConfirm) btnConfirm.addEventListener('click', confirm);
   }
 
-  window._clearClient = () => { state.client = null; state.clientQuery = ''; state.clientPhone = ''; render(); };
+  window._clearClient = () => { state.client = null; state.clientQuery = ''; state.clientPhone = ''; state.clientLocation = ''; render(); };
   window._hoverService = (id) => { state.highlightedServiceId = id; render(); };
   window._sendWP = sendWhatsApp;
   window._reset = reset;
-  
+
   window._openPayment = () => { state.showPayment = true; render(); };
   
-  window._openHostedPayment = async () => {
+  window._openCheckoutWindow = () => {
     const total = totalPrice();
-    const btn = event.currentTarget;
-    const originalText = btn.innerHTML;
-    btn.innerHTML = 'Initiating Secure Payment...';
-    btn.disabled = true;
+    const client = state.client ? CLIENTS.find(c => c.id === state.client) : null;
+    const checkoutData = {
+      amount: total,
+      bookingId: state.bookingId,
+      clientName: client ? client.name : (state.clientQuery || 'Guest'),
+      clientPhone: client ? client.phone : (state.clientPhone || '')
+    };
+
+    if (window.parent && window.parent !== window) {
+      // Try direct call first (if same-origin)
+      try {
+        if (typeof window.parent.openCheckoutModal === 'function') {
+          window.parent.openCheckoutModal(checkoutData);
+          if (typeof window.parent.closeBooking === 'function') window.parent.closeBooking();
+          return;
+        }
+      } catch (e) {
+        console.log("Direct parent call failed, falling back to postMessage");
+      }
+      
+      // Fallback to postMessage
+      window.parent.postMessage({ type: 'openCheckout', ...checkoutData }, '*');
+      if (typeof window.parent.closeBooking === 'function') {
+        window.parent.closeBooking();
+      }
+    } else {
+      // Standalone mode: Initialize Razorpay directly
+      console.log("Standalone mode detected. Initializing local Razorpay instance.");
+      window._openHostedPayment();
+    }
+  };
+
+  window._openHostedPayment = async (e) => {
+    const total = totalPrice();
+    const btn = (e && e.currentTarget) ? e.currentTarget : document.querySelector('.btn-full[onclick*="_openCheckoutWindow"]');
+    const originalText = btn ? btn.innerHTML : 'Go to checkout';
+    if (btn) {
+      btn.innerHTML = 'Initiating Secure Payment...';
+      btn.disabled = true;
+    }
 
     try {
       // 1. Create Order on Backend
@@ -1899,7 +2168,7 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
       });
 
       const orderData = await response.json();
-      
+
       // --- Handle Mock Mode ---
       if (orderData.isMock) {
         console.warn("MOCK MODE: Skipping real Razorpay as keys are missing.");
@@ -1943,7 +2212,7 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
 
         const rzp = new Razorpay(options);
         rzp.open();
-        
+
         btn.innerHTML = originalText;
         btn.disabled = false;
       } else {
@@ -1959,26 +2228,26 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
 
   window._closePayment = () => { state.showPayment = false; render(); };
   window._setPaymentMethod = (m) => { state.paymentMethod = m; render(); };
-  window._selectUPIApp = (app) => { 
+  window._selectUPIApp = (app) => {
     const input = document.getElementById('upiIdInput');
     if (input) input.value = `user@${app}`;
   };
   window._processPayment = async () => {
     state.paymentProcessing = true;
     render();
-    
+
     // Simulate payment processing
     await new Promise(r => setTimeout(r, 2000));
-    
+
     // On success
     state.paymentProcessing = false;
     state.showPayment = false;
-    
+
     // Update booking status in BOOKINGS array
     const b = BOOKINGS.find(x => x.id === state.bookingId);
     if (b) {
       b.status = 'confirmed'; // Or 'paid' if you prefer
-      
+
       // Update DB if possible
       try {
         await fetch(`${API_URL}/bookings/${b.id}`, {
@@ -1988,27 +2257,27 @@ Give ONE short, specific, actionable insight (2-3 sentences max) about this book
         });
       } catch (e) { console.error("DB update failed", e); }
     }
-    
+
     // Trigger confetti for payment success too
     fireConfetti();
-    
+
     setTimeout(() => {
       if (window.parent) {
         window.parent.postMessage('refreshData', '*');
         // Close modal after a short delay
         if (typeof window.parent.closeBooking === 'function') {
-           window.parent.closeBooking();
+          window.parent.closeBooking();
         } else {
-           // Fallback if closeBooking is not directly accessible
-           window.parent.postMessage('refreshData', '*');
+          // Fallback if closeBooking is not directly accessible
+          window.parent.postMessage('refreshData', '*');
         }
       }
     }, 1500);
-    
+
     render();
   };
 
   loadFromDB();
 </script>
-
-</script>
+</body>
+</html>
